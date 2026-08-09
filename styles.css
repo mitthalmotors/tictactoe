@@ -57,11 +57,15 @@ h1 {
 
 .cell {
   aspect-ratio: 1;
+  display: grid;
+  place-items: center;
   border: 2px solid var(--border);
   border-radius: 16px;
   background: #f9fafb;
-  font-size: clamp(2rem, 7vw, 3rem);
+  font-size: clamp(2.25rem, 8vw, 3.5rem);
   font-weight: 700;
+  line-height: 1;
+  padding: 0;
   color: var(--text);
   cursor: pointer;
   transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;

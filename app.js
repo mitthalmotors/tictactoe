@@ -3,6 +3,9 @@ const board = document.getElementById('board');
 const cells = Array.from(document.querySelectorAll('.cell'));
 const restartButton = document.getElementById('restart');
 
+const PLAYER_X = '❌';
+const PLAYER_O = '⭕';
+
 const winningCombinations = [
   [0, 1, 2],
   [3, 4, 5],
@@ -14,7 +17,7 @@ const winningCombinations = [
   [2, 4, 6]
 ];
 
-let currentPlayer = 'X';
+let currentPlayer = PLAYER_X;
 let gameActive = true;
 let gameState = Array(9).fill('');
 
@@ -62,15 +65,15 @@ function handleCellClick(event) {
     return;
   }
 
-  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  currentPlayer = currentPlayer === PLAYER_X ? PLAYER_O : PLAYER_X;
   updateStatus(`Player ${currentPlayer}'s turn`);
 }
 
 function restartGame() {
-  currentPlayer = 'X';
+  currentPlayer = PLAYER_X;
   gameActive = true;
   gameState = Array(9).fill('');
-  updateStatus("Player X's turn");
+  updateStatus(`Player ${PLAYER_X}'s turn`);
 
   cells.forEach((cell) => {
     cell.textContent = '';
@@ -81,4 +84,4 @@ function restartGame() {
 board.addEventListener('click', handleCellClick);
 restartButton.addEventListener('click', restartGame);
 
-updateStatus("Player X's turn");
+updateStatus(`Player ${PLAYER_X}'s turn`);
