@@ -2,9 +2,16 @@ const statusDisplay = document.getElementById('status');
 const board = document.getElementById('board');
 const cells = Array.from(document.querySelectorAll('.cell'));
 const restartButton = document.getElementById('restart');
+const turnIndicator = document.getElementById('turn-indicator');
+const infoPanel = document.querySelector('.info-panel');
+const turnChip = turnIndicator?.closest('.meta-chip');
 
-const PLAYER_X = '❌';
-const PLAYER_O = '⭕';
+let computerTurnTimeout = null;
+
+const HUMAN_PLAYER = '❌';
+const COMPUTER_PLAYER = '⭕';
+const COMPUTER_MOVE_DELAY_MIN = 280;
+const COMPUTER_MOVE_DELAY_MAX = 520;
 
 const winningCombinations = [
   [0, 1, 2],
@@ -17,71 +24,275 @@ const winningCombinations = [
   [2, 4, 6]
 ];
 
-let currentPlayer = PLAYER_X;
+let currentPlayer = HUMAN_PLAYER;
 let gameActive = true;
 let gameState = Array(9).fill('');
+let isComputerThinking = false;
 
-function updateStatus(message) {
+function updateStatus(message, state = 'playing') {
   statusDisplay.textContent = message;
+  statusDisplay.dataset.state = state;
+  statusDisplay.classList.remove('status-bump');
+  void statusDisplay.offsetWidth;
+  statusDisplay.classList.add('status-bump');
+}
+
+function updateTurnIndicator() {
+  const isHumanTurn = gameActive && currentPlayer === HUMAN_PLAYER && !isComputerThinking;
+  const isComputerTurn = gameActive && currentPlayer === COMPUTER_PLAYER;
+
+  if (!gameActive) {
+    turnIndicator.textContent = 'Game over';
+  } else if (isComputerThinking) {
+    turnIndicator.textContent = 'Computer ⭕ thinking';
+  } else {
+    turnIndicator.textContent = currentPlayer === HUMAN_PLAYER ? 'Player ❌' : 'Computer ⭕';
+  }
+
+  document.body.classList.toggle('turn-human', isHumanTurn);
+  document.body.classList.toggle('turn-computer', isComputerTurn);
+  document.body.classList.toggle('is-thinking', isComputerThinking);
+  board.classList.toggle('board-locked', isComputerThinking || !gameActive);
+
+  if (turnChip) {
+    turnChip.classList.toggle('is-human-turn', isHumanTurn);
+    turnChip.classList.toggle('is-computer-turn', isComputerTurn);
+    turnChip.classList.toggle('is-thinking', isComputerThinking);
+    turnChip.classList.toggle('is-game-over', !gameActive);
+  }
+
+  if (infoPanel) {
+    infoPanel.classList.toggle('is-thinking', isComputerThinking);
+    infoPanel.classList.toggle('is-game-over', !gameActive);
+  }
+}
+
+function setBoardInteractivity() {
+  cells.forEach((cell, index) => {
+    const shouldDisable = !gameActive || isComputerThinking || Boolean(gameState[index]);
+    cell.disabled = shouldDisable;
+  });
+}
+
+function getWinningCombination(state) {
+  for (const combination of winningCombinations) {
+    const [a, b, c] = combination;
+    if (state[a] && state[a] === state[b] && state[a] === state[c]) {
+      return combination;
+    }
+  }
+
+  return null;
+}
+
+function highlightWinningCells(combination) {
+  cells.forEach((cell) => cell.classList.remove('is-winning-cell'));
+
+  if (!combination) {
+    return;
+  }
+
+  combination.forEach((index) => {
+    cells[index].classList.add('is-winning-cell');
+  });
+}
+
+function endGame(message, state = 'finished', winningCombination = null) {
+  gameActive = false;
+  isComputerThinking = false;
+  if (computerTurnTimeout) {
+    window.clearTimeout(computerTurnTimeout);
+    computerTurnTimeout = null;
+  }
+  highlightWinningCells(winningCombination);
+  updateStatus(message, state);
+  updateTurnIndicator();
+  setBoardInteractivity();
 }
 
 function checkWinner() {
-  for (const combination of winningCombinations) {
-    const [a, b, c] = combination;
-    if (!gameState[a] || gameState[a] !== gameState[b] || gameState[a] !== gameState[c]) {
-      continue;
-    }
+  const winningCombination = getWinningCombination(gameState);
 
-    gameActive = false;
-    updateStatus(`Player ${gameState[a]} wins!`);
-    cells.forEach((cell) => {
-      cell.disabled = true;
-    });
+  if (winningCombination) {
+    const winner = gameState[winningCombination[0]];
+    endGame(
+      winner === HUMAN_PLAYER ? 'You win!' : 'Computer wins!',
+      winner === HUMAN_PLAYER ? 'win' : 'lose',
+      winningCombination
+    );
     return true;
   }
 
   if (!gameState.includes('')) {
-    gameActive = false;
-    updateStatus("It's a draw!");
+    endGame("It's a draw!", 'draw');
     return true;
   }
 
   return false;
 }
 
-function handleCellClick(event) {
-  const cell = event.target;
-  const index = Number(cell.dataset.cellIndex);
+function placeMove(index, player) {
+  gameState[index] = player;
+  cells[index].textContent = player;
+  cells[index].dataset.player = player === HUMAN_PLAYER ? 'human' : 'computer';
+  cells[index].classList.remove('cell-pop');
+  void cells[index].offsetWidth;
+  cells[index].classList.add('cell-pop');
+  setBoardInteractivity();
+}
 
-  if (!gameActive || gameState[index]) {
+function switchTurn() {
+  currentPlayer = currentPlayer === HUMAN_PLAYER ? COMPUTER_PLAYER : HUMAN_PLAYER;
+  updateTurnIndicator();
+}
+
+function getAvailableMoves(state) {
+  return state
+    .map((value, index) => (value === '' ? index : null))
+    .filter((value) => value !== null);
+}
+
+function findBestMove() {
+  const availableMoves = getAvailableMoves(gameState);
+
+  for (const move of availableMoves) {
+    const testState = [...gameState];
+    testState[move] = COMPUTER_PLAYER;
+    if (getWinningCombination(testState)) {
+      return move;
+    }
+  }
+
+  for (const move of availableMoves) {
+    const testState = [...gameState];
+    testState[move] = HUMAN_PLAYER;
+    if (getWinningCombination(testState)) {
+      return move;
+    }
+  }
+
+  if (gameState[4] === '') {
+    return 4;
+  }
+
+  const corners = [0, 2, 6, 8].filter((index) => gameState[index] === '');
+  if (corners.length > 0) {
+    return corners[Math.floor(Math.random() * corners.length)];
+  }
+
+  return availableMoves[0];
+}
+
+function getComputerMoveDelay() {
+  const openCells = getAvailableMoves(gameState).length;
+
+  if (openCells >= 8) {
+    return COMPUTER_MOVE_DELAY_MAX;
+  }
+
+  if (openCells <= 3) {
+    return COMPUTER_MOVE_DELAY_MIN;
+  }
+
+  return Math.round((COMPUTER_MOVE_DELAY_MIN + COMPUTER_MOVE_DELAY_MAX) / 2);
+}
+
+function runComputerTurn() {
+  if (!gameActive || currentPlayer !== COMPUTER_PLAYER || isComputerThinking) {
     return;
   }
 
-  gameState[index] = currentPlayer;
-  cell.textContent = currentPlayer;
-  cell.disabled = true;
+  isComputerThinking = true;
+  updateStatus('Computer is thinking...', 'thinking');
+  updateTurnIndicator();
+  setBoardInteractivity();
+
+  computerTurnTimeout = window.setTimeout(() => {
+    if (!gameActive || currentPlayer !== COMPUTER_PLAYER) {
+      isComputerThinking = false;
+      computerTurnTimeout = null;
+      updateTurnIndicator();
+      setBoardInteractivity();
+      return;
+    }
+
+    const move = findBestMove();
+
+    isComputerThinking = false;
+    computerTurnTimeout = null;
+
+    if (move === undefined) {
+      if (!checkWinner()) {
+        endGame("It's a draw!", 'draw');
+      }
+      return;
+    }
+
+    placeMove(move, COMPUTER_PLAYER);
+
+    if (checkWinner()) {
+      return;
+    }
+
+    switchTurn();
+    updateStatus('Your turn', 'playing');
+    setBoardInteractivity();
+  }, getComputerMoveDelay());
+}
+
+function handleCellClick(event) {
+  const cell = event.target.closest('.cell');
+  if (!cell || !board.contains(cell)) {
+    return;
+  }
+
+  const index = Number.parseInt(cell.dataset.cellIndex ?? '', 10);
+  const isValidIndex = Number.isInteger(index) && index >= 0 && index < gameState.length;
+
+  if (
+    !isValidIndex ||
+    !gameActive ||
+    isComputerThinking ||
+    currentPlayer !== HUMAN_PLAYER ||
+    gameState[index]
+  ) {
+    return;
+  }
+
+  placeMove(index, HUMAN_PLAYER);
 
   if (checkWinner()) {
     return;
   }
 
-  currentPlayer = currentPlayer === PLAYER_X ? PLAYER_O : PLAYER_X;
-  updateStatus(`Player ${currentPlayer}'s turn`);
+  switchTurn();
+  runComputerTurn();
 }
 
 function restartGame() {
-  currentPlayer = PLAYER_X;
+  if (computerTurnTimeout) {
+    window.clearTimeout(computerTurnTimeout);
+    computerTurnTimeout = null;
+  }
+
+  currentPlayer = HUMAN_PLAYER;
   gameActive = true;
   gameState = Array(9).fill('');
-  updateStatus(`Player ${PLAYER_X}'s turn`);
+  isComputerThinking = false;
 
   cells.forEach((cell) => {
     cell.textContent = '';
-    cell.disabled = false;
+    cell.removeAttribute('data-player');
+    cell.classList.remove('is-winning-cell', 'cell-pop');
   });
+
+  board.classList.remove('board-locked');
+  updateStatus('Your turn', 'playing');
+  updateTurnIndicator();
+  setBoardInteractivity();
 }
 
 board.addEventListener('click', handleCellClick);
 restartButton.addEventListener('click', restartGame);
 
-updateStatus(`Player ${PLAYER_X}'s turn`);
+restartGame();
