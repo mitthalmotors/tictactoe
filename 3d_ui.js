@@ -18,7 +18,9 @@ function create3DUI() {
   scene.add(pointLight);
 
   // Add a cube to the scene
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  import { loadKittenModel } from './kitten_model.js';
+const kitten = loadKittenModel();
+scene.add(kitten);
   const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
