@@ -44,9 +44,9 @@ function updateTurnIndicator() {
   if (!gameActive) {
     turnIndicator.textContent = 'Game over';
   } else if (isComputerThinking) {
-    turnIndicator.textContent = 'Computer ⭕ thinking';
+    turnIndicator.textContent = 'Computer 🐱 thinking';
   } else {
-    turnIndicator.textContent = currentPlayer === HUMAN_PLAYER ? 'Player ❌' : 'Computer ⭕';
+    turnIndicator.textContent = currentPlayer === HUMAN_PLAYER ? 'Player 🐶' : 'Computer 🐱';
   }
 
   document.body.classList.toggle('turn-human', isHumanTurn);
