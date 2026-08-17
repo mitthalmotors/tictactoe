@@ -4,7 +4,7 @@ const cells = Array.from(document.querySelectorAll('.cell'));
 const restartButton = document.getElementById('restart');
 const turnIndicator = document.getElementById('turn-indicator');
 const infoPanel = document.querySelector('.info-panel');
-const turnChip = turnIndicator?.closest('.meta-chip');
+const turnChip = turnIndicator ? turnIndicator.closest('.meta-chip') : null;
 
 let computerTurnTimeout = null;
 
@@ -183,68 +183,58 @@ function findBestMove() {
   return availableMoves[0];
 }
 
-function handleCellClick(clickedCellEvent) {
-  const clickedCell = clickedCellEvent.target;
-  const clickedCellIndex = parseInt(clickedCell.dataset.cellIndex);
 
-  if (gameState[clickedCellIndex] !== '' || !gameActive || isComputerThinking) {
+function handleCellClick(event) {
+  const cell = event.target.closest('.cell');
+  if (!cell || !board.contains(cell)) {
     return;
   }
 
-  placeMove(clickedCellIndex, currentPlayer);
+  const index = Number.parseInt(cell.dataset.cellIndex ?? '', 10);
+  const isValidIndex = Number.isInteger(index) && index >= 0 && index < gameState.length;
+
+  if (
+    !isValidIndex ||
+    !gameActive ||
+    isComputerThinking ||
+    currentPlayer !== HUMAN_PLAYER ||
+    gameState[index]
+  ) {
+    return;
+  }
+
+  placeMove(index, HUMAN_PLAYER);
+
   if (checkWinner()) {
     return;
   }
+
   switchTurn();
-  if (currentPlayer === COMPUTER_PLAYER) {
-    handleComputerMove();
-  }
+  runComputerTurn();
 }
 
-function handleComputerMove() {
-  isComputerThinking = true;
-  updateTurnIndicator();
-  setBoardInteractivity();
-
-  computerTurnTimeout = window.setTimeout(() => {
-    const bestMove = findBestMove();
-    placeMove(bestMove, COMPUTER_PLAYER);
-    if (checkWinner()) {
-      return;
-    }
-    switchTurn();
-    isComputerThinking = false;
-    updateTurnIndicator();
-    setBoardInteractivity();
-  }, getComputerMoveDelay());
-}
-
-function handleRestartGame() {
-  gameActive = true;
-  isComputerThinking = false;
-  currentPlayer = HUMAN_PLAYER;
-  gameState = Array(9).fill('');
-  updateStatus('Player ❌'s turn');
-  updateTurnIndicator();
-  cells.forEach(cell => {
-    cell.textContent = '';
-    cell.classList.remove('is-winning-cell');
-    cell.dataset.player = '';
-  });
-  setBoardInteractivity();
+function restartGame() {
   if (computerTurnTimeout) {
     window.clearTimeout(computerTurnTimeout);
     computerTurnTimeout = null;
   }
+
+  currentPlayer = HUMAN_PLAYER;
+  gameActive = true;
+  gameState = Array(9).fill('');
+  isComputerThinking = false;
+
+  cells.forEach((cell) => {
+    cell.textContent = '';
+    cell.removeAttribute('data-player');
+    cell.classList.remove('is-winning-cell', 'cell-pop');
+  });
+
+  board.classList.remove('board-locked');
+  updateStatus('Your turn', 'playing');
+  updateTurnIndicator();
+  setBoardInteractivity();
 }
-
-cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-restartButton.addEventListener('click', handleRestartGame);
-
-updateStatus('Player ❌'s turn');
-updateTurnIndicator();
-setBoardInteractivity();
-
 function getComputerMoveDelay() {
   const openCells = getAvailableMoves(gameState).length;
 
@@ -301,59 +291,6 @@ function runComputerTurn() {
     setBoardInteractivity();
   }, getComputerMoveDelay());
 }
-
-function handleCellClick(event) {
-  const cell = event.target.closest('.cell');
-  if (!cell || !board.contains(cell)) {
-    return;
-  }
-
-  const index = Number.parseInt(cell.dataset.cellIndex ?? '', 10);
-  const isValidIndex = Number.isInteger(index) && index >= 0 && index < gameState.length;
-
-  if (
-    !isValidIndex ||
-    !gameActive ||
-    isComputerThinking ||
-    currentPlayer !== HUMAN_PLAYER ||
-    gameState[index]
-  ) {
-    return;
-  }
-
-  placeMove(index, HUMAN_PLAYER);
-
-  if (checkWinner()) {
-    return;
-  }
-
-  switchTurn();
-  runComputerTurn();
-}
-
-function restartGame() {
-  if (computerTurnTimeout) {
-    window.clearTimeout(computerTurnTimeout);
-    computerTurnTimeout = null;
-  }
-
-  currentPlayer = HUMAN_PLAYER;
-  gameActive = true;
-  gameState = Array(9).fill('');
-  isComputerThinking = false;
-
-  cells.forEach((cell) => {
-    cell.textContent = '';
-    cell.removeAttribute('data-player');
-    cell.classList.remove('is-winning-cell', 'cell-pop');
-  });
-
-  board.classList.remove('board-locked');
-  updateStatus('Your turn', 'playing');
-  updateTurnIndicator();
-  setBoardInteractivity();
-}
-
 board.addEventListener('click', handleCellClick);
 restartButton.addEventListener('click', restartGame);
 
