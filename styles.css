@@ -102,6 +102,8 @@ h1 {
   justify-content: center;
 }
 
+
+.cell {
   --cell-size: 100px;
   width: var(--cell-size);
   height: var(--cell-size);
