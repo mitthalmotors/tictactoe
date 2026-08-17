@@ -1,20 +1,20 @@
 body {
-  background-color: black;
+  background-color: #1a1a2e;
 }
 
 :root {
-  color-scheme: light;
-  --bg: #f0fdf4;
-  --bg-accent: #dcfce7;
-  --card: rgba(255, 255, 255, 0.88);
-  --card-border: rgba(255, 255, 255, 0.65);
-  --text: #0f172a;
-  --muted: #475569;
-  --primary: #2563eb;
-  --primary-dark: #1d4ed8;
-  --primary-soft: rgba(37, 99, 235, 0.12);
-  --danger-soft: rgba(239, 68, 68, 0.12);
-  --success-soft: rgba(34, 197, 94, 0.16);
+  color-scheme: dark;
+  --bg: #1a1a2e;
+  --bg-accent: #2d2d44;
+  --card: rgba(30, 30, 46, 0.88);
+  --card-border: rgba(50, 50, 70, 0.65);
+  --text: #e0e0e0;
+  --muted: #a0a0a0;
+  --primary: #8e44ad;
+  --primary-dark: #6c3483;
+  --primary-soft: rgba(142, 68, 173, 0.12);
+  --danger-soft: rgba(231, 76, 60, 0.12);
+  --success-soft: rgba(46, 204, 113, 0.16);
   --border: #d7deea;
   --cell-bg: rgba(248, 250, 252, 0.98);
   --cell-bg-hover: #eff6ff;
