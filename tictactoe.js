@@ -183,23 +183,7 @@ function findBestMove() {
   return availableMoves[0];
 }
 
-function handleCellClick(clickedCellEvent) {
-  const clickedCell = clickedCellEvent.target;
-  const clickedCellIndex = parseInt(clickedCell.dataset.cellIndex);
 
-  if (gameState[clickedCellIndex] !== '' || !gameActive || isComputerThinking) {
-    return;
-  }
-
-  placeMove(clickedCellIndex, currentPlayer);
-  if (checkWinner()) {
-    return;
-  }
-  switchTurn();
-  if (currentPlayer === COMPUTER_PLAYER) {
-    handleComputerMove();
-  }
-}
 
 function handleComputerMove() {
   isComputerThinking = true;
@@ -238,7 +222,6 @@ function handleRestartGame() {
   }
 }
 
-cells.forEach(cell => cell.addEventListener('click', handleCellClick));
 restartButton.addEventListener('click', handleRestartGame);
 
 updateStatus('Player ❌'s turn');
@@ -342,10 +325,11 @@ function restartGame() {
   gameState = Array(9).fill('');
   isComputerThinking = false;
 
-  cells.forEach((cell) => {
+  cells.forEach((cell, index) => {
     cell.textContent = '';
     cell.removeAttribute('data-player');
     cell.classList.remove('is-winning-cell', 'cell-pop');
+    cell.dataset.cellIndex = index;
   });
 
   board.classList.remove('board-locked');
