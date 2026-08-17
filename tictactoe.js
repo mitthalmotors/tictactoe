@@ -183,6 +183,68 @@ function findBestMove() {
   return availableMoves[0];
 }
 
+function handleCellClick(clickedCellEvent) {
+  const clickedCell = clickedCellEvent.target;
+  const clickedCellIndex = parseInt(clickedCell.dataset.cellIndex);
+
+  if (gameState[clickedCellIndex] !== '' || !gameActive || isComputerThinking) {
+    return;
+  }
+
+  placeMove(clickedCellIndex, currentPlayer);
+  if (checkWinner()) {
+    return;
+  }
+  switchTurn();
+  if (currentPlayer === COMPUTER_PLAYER) {
+    handleComputerMove();
+  }
+}
+
+function handleComputerMove() {
+  isComputerThinking = true;
+  updateTurnIndicator();
+  setBoardInteractivity();
+
+  computerTurnTimeout = window.setTimeout(() => {
+    const bestMove = findBestMove();
+    placeMove(bestMove, COMPUTER_PLAYER);
+    if (checkWinner()) {
+      return;
+    }
+    switchTurn();
+    isComputerThinking = false;
+    updateTurnIndicator();
+    setBoardInteractivity();
+  }, getComputerMoveDelay());
+}
+
+function handleRestartGame() {
+  gameActive = true;
+  isComputerThinking = false;
+  currentPlayer = HUMAN_PLAYER;
+  gameState = Array(9).fill('');
+  updateStatus('Player ❌'s turn');
+  updateTurnIndicator();
+  cells.forEach(cell => {
+    cell.textContent = '';
+    cell.classList.remove('is-winning-cell');
+    cell.dataset.player = '';
+  });
+  setBoardInteractivity();
+  if (computerTurnTimeout) {
+    window.clearTimeout(computerTurnTimeout);
+    computerTurnTimeout = null;
+  }
+}
+
+cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+restartButton.addEventListener('click', handleRestartGame);
+
+updateStatus('Player ❌'s turn');
+updateTurnIndicator();
+setBoardInteractivity();
+
 function getComputerMoveDelay() {
   const openCells = getAvailableMoves(gameState).length;
 
