@@ -1,6 +1,17 @@
 :root {
   color-scheme: light;
-  --bg: #f0fdf4;
+  --bg: #1a2a3a; /* A darker shade as requested */
+
+body {
+  background-color: var(--bg);
+}
+
+.game-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--card-border);
+}
   --bg-accent: #dcfce7;
   --card: rgba(255, 255, 255, 0.88);
   --card-border: rgba(255, 255, 255, 0.65);
