@@ -198,19 +198,31 @@ button:hover {
     background-color: #d32f2f;
 }
 
-.controls-info {
+.mobile-controls {
+    display: none;
+    justify-content: space-around;
+    width: 100%;
     margin-top: 20px;
-    font-size: 0.9em;
-    text-align: left;
-    padding: 10px;
-    background-color: #282c34;
+}
+
+.mobile-controls button {
+    background-color: #61dafb;
+    color: #282c34;
+    border: none;
+    padding: 15px;
+    font-size: 1.2em;
     border-radius: 5px;
+    cursor: pointer;
+    flex-grow: 1;
+    margin: 0 5px;
 }
 
-.controls-info p {
-    margin: 5px 0;
-}
+@media (max-width: 768px) {
+    .controls {
+        display: none;
+    }
 
-.controls-info strong {
-    color: #61dafb;
+    .mobile-controls {
+        display: flex;
+    }
 }

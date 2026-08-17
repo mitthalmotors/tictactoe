@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.getElementById('score');
     const startButton = document.getElementById('start-button');
     const resetButton = document.getElementById('reset-button');
+    const rotateButton = document.getElementById('rotate-button');
+    const leftButton = document.getElementById('left-button');
+    const downButton = document.getElementById('down-button');
+    const rightButton = document.getElementById('right-button');
     const width = 10;
     const height = 20;
     let squares = Array.from(Array(width * height).keys()).map(i => {
@@ -83,8 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // assign functions to keycodes
-    function control(e) {
-        if (!isGameOver && !isPaused) {
+function control(e) {
+        if (e.keyCode === 80) { // p key
+            pauseGame();
+        } else if (!isGameOver && !isPaused) {
             if (e.keyCode === 37) {
                 moveLeft();
             } else if (e.keyCode === 38) {
@@ -95,11 +101,32 @@ document.addEventListener('DOMContentLoaded', () => {
                 moveDown();
             }
         }
-        if (e.keyCode === 80) { // 'P' key for pause
-            pauseGame();
-        }
     }
     document.addEventListener('keyup', control);
+
+    rotateButton.addEventListener('click', () => {
+        if (!isGameOver && !isPaused) {
+            rotate();
+        }
+    });
+
+    leftButton.addEventListener('click', () => {
+        if (!isGameOver && !isPaused) {
+            moveLeft();
+        }
+    });
+
+    downButton.addEventListener('click', () => {
+        if (!isGameOver && !isPaused) {
+            moveDown();
+        }
+    });
+
+    rightButton.addEventListener('click', () => {
+        if (!isGameOver && !isPaused) {
+            moveRight();
+        }
+    });
 
     // move down function
     function moveDown() {
