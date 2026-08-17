@@ -67,12 +67,9 @@ function updateTurnIndicator() {
   }
 }
 
-function setBoardInteractivity() {
-  cells.forEach((cell, index) => {
-    const shouldDisable = !gameActive || isComputerThinking || Boolean(gameState[index]);
-    cell.disabled = shouldDisable;
-  });
-}
+
+
+
 
 function getWinningCombination(state) {
   for (const combination of winningCombinations) {
@@ -137,8 +134,7 @@ function placeMove(index, player) {
   cells[index].dataset.player = player === HUMAN_PLAYER ? 'human' : 'computer';
   cells[index].classList.remove('cell-pop');
   void cells[index].offsetWidth;
-  cells[index].classList.add('cell-pop');
-  setBoardInteractivity();
+
 }
 
 function switchTurn() {
@@ -286,6 +282,7 @@ function runComputerTurn() {
 }
 
 function handleCellClick(event) {
+  console.log('Cell clicked:', event.target.dataset.index);
   const cell = event.target.closest('.cell');
   if (!cell || !board.contains(cell)) {
     return;
@@ -301,6 +298,13 @@ function handleCellClick(event) {
     currentPlayer !== HUMAN_PLAYER ||
     gameState[index]
   ) {
+    console.log('Click ignored due to:', {
+      isValidIndex: isValidIndex,
+      gameActive: gameActive,
+      isComputerThinking: isComputerThinking,
+      currentPlayer: currentPlayer,
+      cellOccupied: Boolean(gameState[index])
+    });
     return;
   }
 
