@@ -32,8 +32,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.95), transparent 38%),
-    linear-gradient(135deg, var(--bg), var(--bg-accent));
+    linear-gradient(to right, #e0b0ff, #8a2be2);
 }
 
 body::before {
