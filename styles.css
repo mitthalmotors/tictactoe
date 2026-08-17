@@ -45,14 +45,7 @@
   box-shadow: var(--shadow);
 }
 
-.game-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-bottom: 1px solid var(--border);
-  display: block; 1px solid var(--card-border);
-  display: block; 1px solid var(--border);
-}
+
 
 .game-card-content {
   padding: 1.5rem;
@@ -119,29 +112,8 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
-  color: var(--text);
-  background:
-    linear-gradient(to right, #e0b0ff, #8a2be2);
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.12), transparent 28%),
-    radial-gradient(circle at 80% 10%, rgba(14, 165, 233, 0.12), transparent 24%),
-    radial-gradient(circle at 50% 90%, rgba(59, 130, 246, 0.08), transparent 30%);
-}
-
-body.turn-human::before {
-  animation: float-aura 8s ease-in-out infinite;
-}
-
-body.turn-computer::before,
-body.is-thinking::before {
-  animation: float-aura 5s ease-in-out infinite alternate;
+  color: white; /* Changed to white for better contrast on black */
+  background: #1a1a1a;
 }
 
 button,
@@ -189,6 +161,10 @@ h1 {
   margin: 0;
   font-size: clamp(2rem, 5vw, 2.7rem);
   line-height: 1.05;
+  color: #00bfff; /* Deep Sky Blue */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  padding-bottom: 20px; /* Add some space below the header */
 }
 
 .subtitle {
