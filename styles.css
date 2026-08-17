@@ -1,6 +1,6 @@
 :root {
   color-scheme: light;
-  --bg: #e0f2f7; /* A lighter, more pleasant blue-green */
+  --bg: #1a2a3a; /* A darker shade as requested */
 
 body {
   background-color: var(--bg);
