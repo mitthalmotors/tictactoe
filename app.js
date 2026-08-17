@@ -8,8 +8,8 @@ const turnChip = turnIndicator?.closest('.meta-chip');
 
 let computerTurnTimeout = null;
 
-const HUMAN_PLAYER = '❌';
-const COMPUTER_PLAYER = '⭕';
+const HUMAN_PLAYER = '🐶';
+const COMPUTER_PLAYER = '🐱';
 const COMPUTER_MOVE_DELAY_MIN = 280;
 const COMPUTER_MOVE_DELAY_MAX = 520;
 
