@@ -1,10 +1,10 @@
 body {
-  background-color: #1a1a2e;
+  background-color: black;
 }
 
 :root {
   color-scheme: dark;
-  --bg: #1a1a2e;
+  --bg: black;
   --bg-accent: #2d2d44;
   --card: rgba(30, 30, 46, 0.88);
   --card-border: rgba(50, 50, 70, 0.65);
