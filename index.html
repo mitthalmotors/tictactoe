@@ -3,54 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tic-Tac-Toe</title>
+  <title>Game Selection</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="app">
-    <section class="game-card" aria-labelledby="game-title">
+    <section class="game-card" aria-labelledby="game-selection-title">
       <div class="hero">
-        <p class="eyebrow">Single-player mode</p>
-        <h1 id="game-title">Tic-Tac-Toe</h1>
-        <p class="subtitle">Play as ❌ against the computer and race to three in a row.</p>
+        <h1 id="game-selection-title">Select a Game</h1>
+        <p class="subtitle">Choose your adventure!</p>
       </div>
 
-      <section class="info-panel" aria-label="Game information">
-        <div class="status-block">
-          <p class="label">Game status</p>
-          <p id="status" class="status" aria-live="polite">Your turn</p>
-        </div>
-
-        <div class="meta-row">
-          <div class="meta-chip" aria-live="polite">
-            <span class="label">Mode</span>
-            <strong id="mode-indicator">Human vs Computer</strong>
-          </div>
-          <div class="meta-chip" aria-live="polite">
-            <span class="label">Turn</span>
-            <strong id="turn-indicator">Player ❌</strong>
-          </div>
-        </div>
-      </section>
-
-      <div id="board" class="board" role="grid" aria-label="Tic-Tac-Toe board">
-        <button class="cell" type="button" data-cell-index="0" aria-label="Cell 1"></button>
-        <button class="cell" type="button" data-cell-index="1" aria-label="Cell 2"></button>
-        <button class="cell" type="button" data-cell-index="2" aria-label="Cell 3"></button>
-        <button class="cell" type="button" data-cell-index="3" aria-label="Cell 4"></button>
-        <button class="cell" type="button" data-cell-index="4" aria-label="Cell 5"></button>
-        <button class="cell" type="button" data-cell-index="5" aria-label="Cell 6"></button>
-        <button class="cell" type="button" data-cell-index="6" aria-label="Cell 7"></button>
-        <button class="cell" type="button" data-cell-index="7" aria-label="Cell 8"></button>
-        <button class="cell" type="button" data-cell-index="8" aria-label="Cell 9"></button>
-      </div>
-
-      <div class="controls">
-        <button id="restart" class="restart" type="button">Restart Game</button>
+      <div class="game-list">
+        <a href="tictactoe.html" class="game-link">
+          <h2>Tic-Tac-Toe</h2>
+          <p>Play the classic 3x3 grid game.</p>
+        </a>
+        <a href="tetris.html" class="game-link">
+          <h2>Tetris</h2>
+          <p>Drop falling blocks and clear lines.</p>
+        </a>
       </div>
     </section>
   </main>
-
-  <script src="app.js"></script>
 </body>
 </html>
