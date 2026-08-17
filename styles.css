@@ -1,3 +1,7 @@
+body {
+  background-color: black;
+}
+
 :root {
   color-scheme: light;
   --bg: #f0fdf4;
