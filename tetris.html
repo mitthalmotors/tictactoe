@@ -1,1 +1,36 @@
-<10 chars>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="tetris.css">
+</head>
+<body>
+    <main class="app">
+        <section class="game-card" aria-labelledby="game-title">
+            <div class="hero">
+                <p class="game-title">Tetris</p>
+            </div>
+            <div class="game-container">
+                <div class="grid"></div>
+                <div class="next-grid">
+                    <div class="next-piece"></div>
+                </div>
+                <div class="info">
+                    <h3>Score: <span id="score">0</span></h3>
+                    <button id="start-button">Start/Pause</button>
+                    <button id="reset-button">Reset</button>
+                </div>
+            </div>
+            <div class="controls">
+                <p>Use arrow keys to move and rotate.</p>
+                <p>Press 'P' to pause.</p>
+            </div>
+            <a href="index.html" class="back-button">Back to Game Selection</a>
+        </section>
+    </main>
+    <script src="tetris.js"></script>
+</body>
+</html>

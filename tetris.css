@@ -1,1 +1,216 @@
-<10 chars>
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #282c34;
+    color: #fff;
+    margin: 0;
+}
+
+.game-container {
+    display: flex;
+    gap: 20px;
+    background-color: #3a3f47;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.grid {
+    display: grid;
+    grid-template-rows: repeat(20, 20px);
+    grid-template-columns: repeat(10, 20px);
+    width: 200px;
+    height: 400px;
+    background-color: #000;
+    border: 2px solid #61dafb;
+}
+
+.grid div {
+    width: 20px;
+    height: 20px;
+    background-color: #333;
+    border: 1px solid #222;
+    box-sizing: border-box;
+}
+
+.tetromino {
+    background-color: #61dafb;
+    border: 1px solid #333;
+}
+
+.tetromino.I {
+    background-color: #00bcd4; /* Cyan */
+}
+
+.tetromino.J {
+    background-color: #2196f3; /* Blue */
+}
+
+.tetromino.L {
+    background-color: #ff9800; /* Orange */
+}
+
+.tetromino.O {
+    background-color: #ffeb3b; /* Yellow */
+}
+
+.tetromino.S {
+    background-color: #4caf50; /* Green */
+}
+
+.tetromino.T {
+    background-color: #9c27b0; /* Purple */
+}
+
+.tetromino.Z {
+    background-color: #f44336; /* Red */
+}
+
+.taken {
+    background-color: #555;
+    border: 1px solid #444;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 150px;
+}
+
+.score-display, .level-display {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 10px;
+    background-color: #282c34;
+    border-radius: 5px;
+}
+
+.next-tetromino {
+    display: grid;
+    grid-template-rows: repeat(4, 20px);
+    grid-template-columns: repeat(4, 20px);
+    width: 80px;
+    height: 80px;
+    background-color: #000;
+    border: 2px solid #61dafb;
+    margin: 20px auto;
+}
+
+.next-tetromino div {
+    width: 20px;
+    height: 20px;
+    background-color: #333;
+    border: 1px solid #222;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #61dafb;
+    color: #282c34;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #21a1f1;
+}
+
+.game-over-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 2em;
+    color: #fff;
+    display: none; /* Hidden by default */
+}
+
+.game-over-message.show {
+    display: block;
+}
+
+.game-over-message button {
+    margin-top: 20px;
+    background-color: #f44336;
+    color: #fff;
+}
+
+.game-over-message button:hover {
+    background-color: #d32f2f;
+}
+
+.pause-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 2em;
+    color: #fff;
+    display: none; /* Hidden by default */
+}
+
+.pause-message.show {
+    display: block;
+}
+
+.home-button {
+    background-color: #61dafb;
+    color: #282c34;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.home-button:hover {
+    background-color: #21a1f1;
+}
+
+.game-over-message .home-button {
+    background-color: #f44336;
+    color: #fff;
+}
+
+.game-over-message .home-button:hover {
+    background-color: #d32f2f;
+}
+
+.controls-info {
+    margin-top: 20px;
+    font-size: 0.9em;
+    text-align: left;
+    padding: 10px;
+    background-color: #282c34;
+    border-radius: 5px;
+}
+
+.controls-info p {
+    margin: 5px 0;
+}
+
+.controls-info strong {
+    color: #61dafb;
+}
