@@ -87,6 +87,17 @@
     font-weight: bold;
 }
 
+.cell.given span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .cell.incorrect input {
     color: red;
+}
+
+.cell input.correct {
+    color: green;
 }
