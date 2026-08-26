@@ -1,0 +1,68 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.container {
+    text-align: center;
+}
+
+#sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 50px);
+    grid-template-rows: repeat(9, 50px);
+    border: 3px solid #333;
+    margin-bottom: 20px;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Vertical lines */
+.cell:nth-child(3n) {
+    border-right: 2px solid #333;
+}
+.cell:nth-child(9n) {
+    border-right: none;
+}
+
+/* Horizontal lines */
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 2px solid #333;
+}
+
+
+
+
+.pre-filled {
+    background-color: #eee;
+    color: #333;
+    font-weight: bold;
+}
+
+.controls button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+}
+
+.controls button:hover {
+    background-color: #0056b3;
+}
