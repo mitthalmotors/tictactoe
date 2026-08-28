@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="sudoku.css">
+</head>
+<body>
+    <main class="app">
+        <section class="game-card" aria-labelledby="game-title">
+            <div class="hero">
+                <h1 id="game-title">Sudoku</h1>
+                <p class="subtitle">Fill the grid so that every row, column, and 3x3 box contains the digits 1-9.</p>
+            </div>
+
+            <div id="sudoku-board"></div>
+            
+            <div id="digits"></div>
+
+            <div class="controls">
+                <p id="errors">Errors: 0</p>
+                <button id="new-game-btn">New Game</button>
+                <button id="solve-btn">Solve</button>
+            </div>
+            <a href="index.html" class="back-button" style="text-align: center; display: block; margin-top: 20px; color: var(--primary);">Back to Game Selection</a>
+        </section>
+    </main>
+    <script src="sudoku.js"></script>
+</body>
+</html>
