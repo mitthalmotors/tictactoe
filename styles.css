@@ -45,7 +45,12 @@
   box-shadow: var(--shadow);
 }
 
-
+.game-card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--card-border);
+}
 
 .game-card-content {
   padding: 1.5rem;
